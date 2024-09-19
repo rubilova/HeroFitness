@@ -28,7 +28,7 @@ struct MyRoutinesView: View {
                 RoutineDetailView(routine: routine)
             }
             .navigationDestination(for: ExerciseFlow.self) {flow in
-                ExerciseFlowView(exercises: flow.exercises)
+                ExerciseFlowView(exercises: flow.exercises) 
             }
         }
     }
