@@ -1,5 +1,3 @@
-# Hero App Case Study
-
 ## Onboarding Feature Specs
 
 ### Story: Customer installs an app
@@ -11,7 +9,7 @@ As a person who wants to exercise
 I want the app to automatically create workouts for me based on my exercise preferences
 ```
 
-#### Scenarios (Acceptance criteria)
+#### Sign In Scenarios (Acceptance criteria)
 
 ```
 Test Sign In navigation:
@@ -21,10 +19,33 @@ Test Sign In navigation:
 ```
 
 ```
-Test empty Sign In fields:
-- Given the customer sees Sign In Screen and has not created account yet
+Test empty Sign In / Empty fields:
+- Given the customer sees Sign In Screen and has left email / password fields empty
 - When the customer taps "Sign In"
-- Then the app displays Sign In screen with Sign In or Register Now buttons
+- Error message is displayed
 ```
-
+```
+Test Sign In / Invalid Email:
+- Given the customer sees Sign In Screen and has entered invalid email
+- When the customer taps "Sign In"
+- Error message indicating invalid email is displayed
+```
+```
+Test Sign In / Invalid Password:
+- Given the customer sees Sign In Screen and has entered invalid email
+- When the customer taps "Sign In"
+- Error message indicating invalid password is displayed
+```
+```
+Test Sign In / Invalid Credentials:
+- Given the customer sees Sign In Screen and has entered email and password combination that does not exist in database
+- When the customer taps "Sign In"
+- Error message indicating invalid password is displayed
+```
+```
+Test Sign In / Successful Sign In:
+- Given the customer sees Sign In Screen and has entered email and password combination that does not exist in database
+- When the customer taps "Sign In"
+- Error message indicating invalid password is displayed
+```
 ---
