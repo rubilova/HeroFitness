@@ -30,8 +30,7 @@ struct RoutineSectionView: View {
                 .fontWeight(.semibold)
             .multilineTextAlignment(.leading)
             Image(systemName: "timer")
-            Text(routine.time)
-                .fontWeight(.semibold)
+            //Text(routine.time).fontWeight(.semibold)
             .multilineTextAlignment(.leading)
         }
     }
@@ -57,8 +56,4 @@ struct RoutineSectionView: View {
             .frame(width: 300,height: 180, alignment: .bottomTrailing)
         }
     }
-}
-
-#Preview {
-    RoutineSectionView(routine: Routine(id: "1", title: "Strength For Runners", thumbnail: "https://cdn.pixabay.com/photo/2016/11/19/12/21/man-1838991_1280.jpg", description: "Sets: 10", time: "30 minutes"))
 }

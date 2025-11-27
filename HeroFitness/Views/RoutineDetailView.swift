@@ -29,10 +29,7 @@ struct RoutineDetailView: View {
             Text(routine.description)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.leading)
-            Image(systemName: "timer")
-            Text(routine.time)
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.leading)
+            
             NavigationLink(value: ExerciseFlow(id: routine.id, exercises: viewModel.exercises)) {
                 startButton()
             }
@@ -48,8 +45,4 @@ struct RoutineDetailView: View {
         .cornerRadius(10)
         .frame(width: 80, height: 40, alignment: .bottomTrailing)
     }
-}
-
-#Preview {
-    RoutineDetailView(routine: Routine(id: "1", title: "Strength For Runners", thumbnail: "runners_strength", description: "Sets: 10", time: "30 minutes"))
 }
