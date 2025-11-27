@@ -17,9 +17,9 @@ struct FilterChip: View {
                 .font(.footnote.weight(.medium))
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(isSelected ?
-                    //LinearGradient(colors: [Color.pink, Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            Color.blue.opacity(0.1)
+                .background(
+                    isSelected
+                    ? Color.blue.opacity(0.1)
                     : Color.white.opacity(0.1)
                 )
                 .foregroundStyle(isSelected ? .white : .white.opacity(0.9))
@@ -36,3 +36,4 @@ struct FilterChip: View {
         .buttonStyle(.plain)
     }
 }
+

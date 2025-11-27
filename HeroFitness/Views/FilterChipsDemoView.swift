@@ -6,87 +6,48 @@
 //
 import SwiftUI
 
-import SwiftUI
-
 struct FilterChipsDemoView: View {
-    // category -> set of selected values (e.g., "sport" -> ["running", "cycling"])
-    @State private var selectedFilters: [String: Set<String>] = [
-        "sport": [],
-        "equipment": [],
-        "level": [],
-        "functional": [],
-        "place": []
-    ]
+    @State private var selectedTags: Set<String> = []
 
-    // All possible filters, grouped by category
-    let allTags: [String: [String]] = [
-        "sport": ["running", "cycling", "boxing", "baseball", "swimming", "rock climbing"],
-        "equipment": ["bodyweight", "dumbbells", "bands"],
-        //"level": ["beginner", "intermediate", "advanced"],
-        "functional": ["upper_body", "lower_body", "core"],
-        "place": ["home", "gym", "outdoors"]
-    ]
+    // All unique tags from mock data
+    var allTags: [String] {
+        let set = Set(mockRoutines.flatMap { $0.tags })
+        return Array(set).sorted { $0.lowercased() < $1.lowercased() }
+    }
 
-    // Filter routines based on selected filters:
-    // AND across categories, OR within a category
+    // Filter logic: routine must contain ALL selected tags
     var filteredRoutines: [Routine] {
-        let activeCategories = selectedFilters.filter { !$0.value.isEmpty }
-        if activeCategories.isEmpty { return mockRoutines }
+        guard !selectedTags.isEmpty else { return mockRoutines }
 
         return mockRoutines.filter { routine in
-            for (category, values) in activeCategories {
-                // Build keys like "sport:running"
-                let requiredKeys = values.map { "\(category):\($0)" }
-
-                // At least one value in this category must match
-                let hasMatchInCategory = routine.tagsFlat.contains { requiredKeys.contains($0) }
-
-                if !hasMatchInCategory {
-                    return false // this routine fails this category
-                }
-            }
-            return true
+            let routineTagSet = Set(routine.tags)
+            return !routineTagSet.isDisjoint(with: selectedTags)
         }
     }
 
     var body: some View {
         VStack(spacing: 0) {
 
-            // MARK: - Grouped Filters
+            // TAGS AREA
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 16) {
-                    ForEach(allTags.keys.sorted(), id: \.self) { categoryKey in
-                        if let values = allTags[categoryKey] {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text(categoryTitle(for: categoryKey))
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                    .padding(.horizontal)
-
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 8) {
-                                        ForEach(values, id: \.self) { value in
-                                            FilterChip(
-                                                label: chipLabel(value),
-                                                isSelected: isSelected(category: categoryKey, value: value)
-                                            ) {
-                                                toggle(category: categoryKey, value: value)
-                                            }
-                                        }
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
+                TagFlowLayout(spacing: 8, rowSpacing: 8) {
+                    ForEach(allTags, id: \.self) { tag in
+                        FilterChip(
+                            label: tagDisplay(tag),
+                            isSelected: selectedTags.contains(tag)
+                        ) {
+                            toggle(tag: tag)
                         }
                     }
                 }
+                .padding(.horizontal)
                 .padding(.top, 8)
             }
             .background(Color.blue.opacity(0.95))
 
             Divider().opacity(0.2)
 
-            // MARK: - Routine List
+            // ROUTINE LIST
             List(filteredRoutines) { routine in
                 HStack(spacing: 12) {
                     Image(routine.thumbnail)
@@ -108,7 +69,7 @@ struct FilterChipsDemoView: View {
                             .foregroundColor(.secondary)
                             .lineLimit(2)
 
-                        Text(routine.tagsFlat.joined(separator: ", "))
+                        Text(routine.tags.joined(separator: " • "))
                             .font(.caption2)
                             .foregroundColor(.gray)
                     }
@@ -118,38 +79,88 @@ struct FilterChipsDemoView: View {
             }
         }
         //.navigationTitle("Explore")
-        .background(Color.black.opacity(0.95))
+        .background(Color.blue.opacity(0.95))
     }
 
     // MARK: - Helpers
 
-    func categoryTitle(for key: String) -> String {
-        switch key {
-        case "sport": return "Sport"
-        case "equipment": return "Equipment"
-        case "level": return "Level"
-        case "functional": return "Functional Focus"
-        case "place": return "Place"
-        default: return key.capitalized
-        }
+    func tagDisplay(_ tag: String) -> String {
+        tag.capitalized
     }
 
-    func chipLabel(_ raw: String) -> String {
-        raw.replacingOccurrences(of: "_", with: " ").capitalized
-    }
-
-    func isSelected(category: String, value: String) -> Bool {
-        selectedFilters[category, default: []].contains(value)
-    }
-
-    func toggle(category: String, value: String) {
-        var set = selectedFilters[category, default: []]
-        if set.contains(value) {
-            set.remove(value)
+    func toggle(tag: String) {
+        if selectedTags.contains(tag) {
+            selectedTags.remove(tag)
         } else {
-            set.insert(value)
+            selectedTags.insert(tag)
         }
-        selectedFilters[category] = set
+    }
+}
+
+
+struct TagFlowLayout: Layout {
+    var spacing: CGFloat = 8
+    var rowSpacing: CGFloat = 8
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+
+        guard maxWidth < .infinity else {
+            let totalWidth = subviews.reduce(0) { $0 + $1.sizeThatFits(.unspecified).width + spacing }
+            let maxHeight = subviews.map { $0.sizeThatFits(.unspecified).height }.max() ?? 0
+            return CGSize(width: totalWidth, height: maxHeight)
+        }
+
+        var currentRowWidth: CGFloat = 0
+        var totalHeight: CGFloat = 0
+        var rowHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if currentRowWidth + size.width > maxWidth {
+                totalHeight += rowHeight + rowSpacing
+                currentRowWidth = 0
+                rowHeight = 0
+            }
+            currentRowWidth += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+
+        totalHeight += rowHeight
+        return CGSize(width: maxWidth, height: totalHeight)
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout ()
+    ) {
+        var x = bounds.minX
+        var y = bounds.minY
+        var rowHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+
+            if x + size.width > bounds.maxX {
+                x = bounds.minX
+                y += rowHeight + rowSpacing
+                rowHeight = 0
+            }
+
+            subview.place(
+                at: CGPoint(x: x, y: y),
+                proposal: ProposedViewSize(width: size.width, height: size.height)
+            )
+
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
     }
 }
 
