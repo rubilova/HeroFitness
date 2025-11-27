@@ -23,6 +23,8 @@
 		070E5CF62C94D11600BD2275 /* RoutineDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E5CF52C94D11600BD2275 /* RoutineDetailView.swift */; };
 		070E5CF82C98754600BD2275 /* ExercisesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E5CF72C98754600BD2275 /* ExercisesViewModel.swift */; };
 		070E5CFA2C987FC000BD2275 /* ExerciseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070E5CF92C987FC000BD2275 /* ExerciseRowView.swift */; };
+		07CB1FE62ED785E400FADA16 /* FilterChipsDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB1FE52ED785E400FADA16 /* FilterChipsDemoView.swift */; };
+		07CB1FE82ED786A700FADA16 /* FilterChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB1FE72ED786A700FADA16 /* FilterChip.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		070E5CF52C94D11600BD2275 /* RoutineDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDetailView.swift; sourceTree = "<group>"; };
 		070E5CF72C98754600BD2275 /* ExercisesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesViewModel.swift; sourceTree = "<group>"; };
 		070E5CF92C987FC000BD2275 /* ExerciseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRowView.swift; sourceTree = "<group>"; };
+		07CB1FE52ED785E400FADA16 /* FilterChipsDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChipsDemoView.swift; sourceTree = "<group>"; };
+		07CB1FE72ED786A700FADA16 /* FilterChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChip.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,8 @@
 		070E5CEF2C938F8B00BD2275 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				07CB1FE72ED786A700FADA16 /* FilterChip.swift */,
+				07CB1FE52ED785E400FADA16 /* FilterChipsDemoView.swift */,
 				070E5CDB2C9335DE00BD2275 /* MyRoutinesView.swift */,
 				070E5CF02C93903600BD2275 /* RoutineSectionView.swift */,
 				070E5CF52C94D11600BD2275 /* RoutineDetailView.swift */,
@@ -202,7 +208,9 @@
 				070E5CF82C98754600BD2275 /* ExercisesViewModel.swift in Sources */,
 				070E5CE22C93592900BD2275 /* ExerciseFlowView.swift in Sources */,
 				070E5CDC2C9335DE00BD2275 /* MyRoutinesView.swift in Sources */,
+				07CB1FE62ED785E400FADA16 /* FilterChipsDemoView.swift in Sources */,
 				070E5CF42C94CD0200BD2275 /* MyRoutinesViewModel.swift in Sources */,
+				07CB1FE82ED786A700FADA16 /* FilterChip.swift in Sources */,
 				070E5CDE2C9335FB00BD2275 /* ScheduleView.swift in Sources */,
 				070E5CCF2C93338D00BD2275 /* ContentView.swift in Sources */,
 				070E5CE92C938AD500BD2275 /* ExerciseFlow.swift in Sources */,
